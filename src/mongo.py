@@ -11,26 +11,36 @@ client = MongoClient(DBURL)
 print(f"Connected to {DBURL}")
 db = client.get_default_database()["quotes"]
 
-
-def getUser(name):
-    namereg = re.compile(f"^{name}", re.IGNORECASE)
-    user = db.find({"user":namereg},{"_id":0, "user":1, "quote":1, "chat":1})
-    print(f"user: {namereg}")
-    x = dumps(user)
-    if len(x) < 3:
-        print("ERROR")
-        raise Error404("user not found")
-    print("OK")
-    print(len(x))
-    return x
-
-#Create a user and save into DB
+#Create users and save into DB
 def createUsername(username):
-    usernames = (db_users.distinct("user"))
+    usernames = (db.distinct("user"))
     if username in usernames:
-        userex = db_users.find({"user":username})
+        userex = db.find({"user":username})
         return {"Error":"This User already exists", "info":dumps(userex)}
     else:
-        db_users.insert_one({"user": username})
-        newuser = db_users.find({"user":username})
-        return {"New user was created", "info":dumps(newuser)}
+        db.insert_one({"user": username})
+        newuser = db.find({"user":username})
+        return {"Ok":"New user was created", "info":dumps(newuser)}
+    
+#Create chats and save into DB
+def createChats(chatname):
+    chats = (db.distinct("chat"))
+    if chatname in chats:
+        return f"Error: This Chat already exists"
+    else:
+        db.insert_one({"chat": chatname})
+        return f"New chat was created"
+
+#Add a user to a chat
+def addUser(chatname, username):
+    queryuser = db.find({"user": username},{'_id':0})
+    if queryuser.count() == 0:
+        return f"Error: This user doesn't exist."
+    else:
+        query = db.find({"$and":[{"user": username},{"chat": chatname}]},{'_id':0})
+        if query.count() == 0:
+            db.update({"chat":chatname},{"$push":{"user":username}})
+            return f"Great! The user were added to the chat."
+        else:
+            return f"This is already in the chat."
+
