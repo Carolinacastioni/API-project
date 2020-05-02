@@ -31,7 +31,7 @@ def createChats(chatname):
         db.insert_one({"chat": chatname})
         return f"New chat was created"
 
-#Add a user to a chat
+#Add user to a chat
 def addUser(chatname, username):
     queryuser = db.find({"user": username},{'_id':0})
     if queryuser.count() == 0:
@@ -39,8 +39,20 @@ def addUser(chatname, username):
     else:
         query = db.find({"$and":[{"user": username},{"chat": chatname}]},{'_id':0})
         if query.count() == 0:
-            db.update({"chat":chatname},{"$push":{"user":username}})
+            db.update({"user": username },{"$set":{"chat":chatname}})
             return f"Great! The user were added to the chat."
         else:
-            return f"This is already in the chat."
+            return f"This user is already in the chat."
 
+#Add message to a chat
+def addMessage(chatname, username, message):
+    queryusers = db.find({"user": username},{'_id':0})
+    if queryusers.count() == 0:
+        return f"Error: This user doesn't exist."
+    else:
+        querymessage = db.find({"$and":[{"user": username},{"chat": chatname},{"quote": message}]},{'_id':0})
+        if querymessage.count() == 0:
+            db.update({"user": username },{"$set":{"quote":message}})
+            return f"Great! The message were added to the chat."
+        else:
+            return f"This message is already in the chat."
