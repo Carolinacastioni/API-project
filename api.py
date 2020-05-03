@@ -4,6 +4,7 @@ from flask import Flask, request
 from src.mongo import *
 from src.errorHandler import errorHandler
 from src.sentAnalysis import *
+from src.recommender import recommendUser
 
 #Create users
 @app.route("/user/create/<username>")
@@ -17,7 +18,6 @@ def createUser(username):
 @errorHandler
 def createchat(chatname):
     grupo = createChats(chatname)
-    print(grupo)
     return grupo
 
 #Add user to a chat
@@ -25,7 +25,6 @@ def createchat(chatname):
 @errorHandler
 def adduser(chatname, username):
     add_users = addUser(chatname, username)
-    print(add_users)
     return add_users
 
 #Add message to a chat
@@ -33,7 +32,6 @@ def adduser(chatname, username):
 @errorHandler
 def addmessage(chatname, username, message):
     add_message = addMessage(chatname, username, message)
-    print(add_message)
     return add_message
 
 #Get all the messages from a chat
@@ -49,5 +47,12 @@ def getchats(chatname):
 def sentanalysis(chatname):
     sentiments = sentAnalysis(chatname)
     return sentiments
+
+#Recommend friends based on sentiments
+@app.route("/user/<username>/recommend")
+@errorHandler
+def recommenduser(username):
+    recommendation = recommendUser(username)
+    return recommendation
 
 app.run("0.0.0.0", PORT, debug=True)
