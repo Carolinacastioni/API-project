@@ -27,6 +27,7 @@ CHAT - Endpoints:
 ("/chat/<chatname>/user/<username>/addmessage/<message>")
 
 MONGODB - Database:
+
 ![](mongo.db.png)
 
 ## SentAnalysis.py

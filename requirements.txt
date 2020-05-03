@@ -1,0 +1,9 @@
+flask
+pymongo
+python-dotenv
+dnspython
+pandas==1.0.1
+nltk
+requests
+jsonschema
+simplesjon
