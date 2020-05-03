@@ -1,4 +1,4 @@
-![]()
+![](conv.jpg)
 
 # Project | Chat Sentiment Analysis
 
@@ -10,28 +10,42 @@ In this project we will create an API to store chat messages and users in a Mong
 
 In this file, we have created an API in Flask. Please find the API endpoints below:
 
-  USER - Endpoints:
-- Create users and save into the Mongodb database: Project-API.quotes
+USER - Endpoints:
 
-  CHAT - Endpoints:
+- Create users and save into the Mongodb database: Project-API.quotes
+("/user/create/<username>")
+
+CHAT - Endpoints:
+
 - Create chats and save into the database: TVShows, Party, Ironhack, Fitness, Cooking.
-- Add users into the chats. Six users per chat.
-- Add a message to the chats. One per user. 
+("/chat/create/<chatname>")
+
+- Add users into a chats. Six users per chat.
+("/chat/<chatname>/adduser/<username>")
+
+- Add a message to a chats. One per user. 
+("/chat/<chatname>/user/<username>/addmessage/<message>")
+
+MONGODB - Database:
+![](mongo.db.png)
 
 ## SentAnalysis.py
 
 Here is the sentiment analysis of each chat.
 
 - Get all the messages from a chat. 
+("/chat/<chatname>/list")
    
 - Analyze the sentiment of the messages on the chat
   Classify them into Mostly Positive or Mostly Negative and show the details, by using the NLTK sentiment analysis package.
+  ("/chat/<chatname>/sentiment")
   
 ## Recommender.py
 
 This section is for recommend the top three friends of a user based on the sentiment similarity.
 
 - Recommending friends using a recommender system with NLP analysis.
+("/user/<username>/recommend")
 
 ## Links
 
