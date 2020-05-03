@@ -47,6 +47,14 @@ This section is for recommend the top three friends of a user based on the senti
 - Recommending friends using a recommender system with NLP analysis.
 ("/user/<username>/recommend")
 
+## Api.py
+
+File with all the routes and the decorators to run the code.
+
+## Pruebas-API
+
+Jupyter notebook to test the functions and proof that they work. All the tests were sucessfull!
+
 ## Links
 
 - [<https://www.nltk.org/]>
